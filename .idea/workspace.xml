@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3a1d5e1-3db8-4fa8-9338-8956e9be0e83" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Battleship.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/Facing.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/Vector2d.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Warship.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/WarshipType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/menu.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/run.java" />
-      <change type="DELETED" beforePath="C:\Users\Alexander\Dropbox\A1 Skool\2015 Fall\SER 215\Project\SunDevilBattleShip\src\edu\sun_devil_battleship\cst215\asu\GameField.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Alexander\Dropbox\A1 Skool\2015 Fall\SER 215\Project\SunDevilBattleShip\src\edu\sun_devil_battleship\cst215\asu\Menu.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Alexander\Dropbox\A1 Skool\2015 Fall\SER 215\Project\SunDevilBattleShip\src\edu\sun_devil_battleship\cst215\asu\SunDevilBattleship.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Alexander\Dropbox\A1 Skool\2015 Fall\SER 215\Project\SunDevilBattleShip\src\edu\sun_devil_battleship\cst215\asu\loadShips.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Alexander\Dropbox\A1 Skool\2015 Fall\SER 215\Project\SunDevilBattleShip\src\edu\sun_devil_battleship\cst215\asu\renderGUI.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Battleship.java" afterPath="$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Battleship.java" />
     </list>
     <ignored path="SunDevilBattleship.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,23 +38,23 @@
       <file leaf-file-name="Battleship.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Battleship.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.85201305">
-              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            <state vertical-scroll-proportion="1.6648531">
+              <caret line="90" column="5" selection-start-line="90" selection-start-column="5" selection-end-line="90" selection-end-column="5" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#717#718#0" expanded="true" />
-                <element signature="e#744#745#0" expanded="true" />
-                <element signature="e#792#793#0" expanded="true" />
-                <element signature="e#825#826#0" expanded="true" />
-                <element signature="e#876#877#0" expanded="true" />
-                <element signature="e#908#909#0" expanded="true" />
-                <element signature="e#959#960#0" expanded="true" />
-                <element signature="e#993#994#0" expanded="true" />
-                <element signature="e#1042#1043#0" expanded="true" />
-                <element signature="e#1070#1071#0" expanded="true" />
-                <element signature="e#1132#1133#0" expanded="true" />
-                <element signature="e#1160#1161#0" expanded="true" />
+                <element signature="e#893#894#0" expanded="true" />
+                <element signature="e#920#921#0" expanded="true" />
+                <element signature="e#968#969#0" expanded="true" />
+                <element signature="e#1001#1002#0" expanded="true" />
+                <element signature="e#1052#1053#0" expanded="true" />
+                <element signature="e#1084#1085#0" expanded="true" />
+                <element signature="e#1139#1140#0" expanded="true" />
+                <element signature="e#1170#1171#0" expanded="true" />
+                <element signature="e#1220#1221#0" expanded="true" />
+                <element signature="e#1254#1255#0" expanded="true" />
+                <element signature="e#1303#1304#0" expanded="true" />
+                <element signature="e#1330#1331#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -76,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Warship.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -615,7 +603,7 @@
       <updated>1445731513411</updated>
       <workItem from="1445731516303" duration="4276000" />
       <workItem from="1445748941005" duration="11000" />
-      <workItem from="1446154763825" duration="1399000" />
+      <workItem from="1446154763825" duration="2026000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Class Relationship Diagram">
       <created>1445733476836</created>
@@ -633,7 +621,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5686000" />
+    <option name="totallyTimeSpent" value="6313000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -795,7 +783,7 @@
     <entry file="file://$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Warship.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -805,23 +793,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/asu/cst215/sun_devil_battleship/game/ships/Battleship.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85201305">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        <state vertical-scroll-proportion="1.6648531">
+          <caret line="90" column="5" selection-start-line="90" selection-start-column="5" selection-end-line="90" selection-end-column="5" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#717#718#0" expanded="true" />
-            <element signature="e#744#745#0" expanded="true" />
-            <element signature="e#792#793#0" expanded="true" />
-            <element signature="e#825#826#0" expanded="true" />
-            <element signature="e#876#877#0" expanded="true" />
-            <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#959#960#0" expanded="true" />
-            <element signature="e#993#994#0" expanded="true" />
-            <element signature="e#1042#1043#0" expanded="true" />
-            <element signature="e#1070#1071#0" expanded="true" />
-            <element signature="e#1132#1133#0" expanded="true" />
-            <element signature="e#1160#1161#0" expanded="true" />
+            <element signature="e#893#894#0" expanded="true" />
+            <element signature="e#920#921#0" expanded="true" />
+            <element signature="e#968#969#0" expanded="true" />
+            <element signature="e#1001#1002#0" expanded="true" />
+            <element signature="e#1052#1053#0" expanded="true" />
+            <element signature="e#1084#1085#0" expanded="true" />
+            <element signature="e#1139#1140#0" expanded="true" />
+            <element signature="e#1170#1171#0" expanded="true" />
+            <element signature="e#1220#1221#0" expanded="true" />
+            <element signature="e#1254#1255#0" expanded="true" />
+            <element signature="e#1303#1304#0" expanded="true" />
+            <element signature="e#1330#1331#0" expanded="true" />
           </folding>
         </state>
       </provider>
