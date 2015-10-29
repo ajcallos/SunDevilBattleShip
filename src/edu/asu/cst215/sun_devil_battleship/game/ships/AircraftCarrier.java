@@ -8,18 +8,18 @@ import edu.asu.cst215.sun_devil_battleship.game.Facing;
 import edu.asu.cst215.sun_devil_battleship.game.Vector2d;
 import edu.asu.cst215.sun_devil_battleship.game.WarshipType;
 
-public class Battleship implements Warship
+public class AircraftCarrier implements Warship
 {
-    private final int shipLength = 5;
-    private final int firepower = 5;
-    private final WarshipType type = WarshipType.Battleship;
+    private final int shipLength = 4;
+    private final int firepower = 4;
+    private final WarshipType type = WarshipType.AircraftCarrier;
     private final Facing facing;
     private final Vector2d location;
 
     private boolean sunk = false;
     private int[] damage = new int[shipLength];
 
-    public Battleship(Vector2d location, Facing facing)
+    public AircraftCarrier(Vector2d location, Facing facing)
     {
         this.location = location;
         this.facing = facing;
