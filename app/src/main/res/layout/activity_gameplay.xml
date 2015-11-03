@@ -27,5 +27,7 @@
         android:id="@+id/fireButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:clickable="true" />
+        android:clickable="true"
+        android:nestedScrollingEnabled="false"
+        android:onClick="onFire" />
 </RelativeLayout>
