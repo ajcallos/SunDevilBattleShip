@@ -10,17 +10,19 @@ import edu.asu.cst215.sun_devil_battleship.game.WarshipType;
 
 public interface Warship
 {
-    public WarshipType getType();
+    WarshipType getType();
 
-    public int getLength();
+    int getLength();
 
-    public int getFirepower();
+    int getFirepower();
 
-    public Vector2d getLocation();
+    Vector2d[] getLocation();
 
-    public Facing getFacing();
+    Facing getFacing();
 
-    public boolean isSunk();
+    boolean isSunk();
 
-    public boolean damage(int location);
+    boolean damage(int location);
+
+    boolean damage(Vector2d location);
 }

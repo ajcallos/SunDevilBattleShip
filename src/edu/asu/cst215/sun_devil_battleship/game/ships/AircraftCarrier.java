@@ -49,7 +49,7 @@ public class AircraftCarrier implements Warship
     }
 
     @Override
-    public Vector2d getLocation()
+    public Vector2d[] getLocation()
     {
         return location;
     }
