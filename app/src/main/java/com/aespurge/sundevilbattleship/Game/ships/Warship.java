@@ -16,7 +16,7 @@ public interface Warship
 
     int getFirepower();
 
-    Vector2d[] getLocation();
+    Vector2d getLocation();
 
     Facing getFacing();
 

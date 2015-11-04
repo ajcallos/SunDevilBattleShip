@@ -53,6 +53,7 @@ public class Battleship implements Warship
     {
         return location;
     }
+
     @Override
     public Facing getFacing()
     {
@@ -77,6 +78,11 @@ public class Battleship implements Warship
             return true;
         else
             return false;
+    }
+
+    @Override
+    public boolean damage(Vector2d location) {
+        return false;
     }
 
     private boolean checkSunk()

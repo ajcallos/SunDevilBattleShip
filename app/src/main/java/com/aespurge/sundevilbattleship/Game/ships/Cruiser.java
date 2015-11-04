@@ -79,6 +79,11 @@ public class Cruiser implements Warship
             return false;
     }
 
+    @Override
+    public boolean damage(Vector2d location) {
+        return false;
+    }
+
     private boolean checkSunk()
     {
         for (int i = 0; i < shipLength; i++)

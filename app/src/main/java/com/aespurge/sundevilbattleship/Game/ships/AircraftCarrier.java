@@ -49,7 +49,7 @@ public class AircraftCarrier implements Warship
     }
 
     @Override
-    public Vector2d[] getLocation()
+    public Vector2d getLocation()
     {
         return location;
     }
@@ -77,6 +77,11 @@ public class AircraftCarrier implements Warship
             return true;
         else
             return false;
+    }
+
+    @Override
+    public boolean damage(Vector2d location) {
+        return false;
     }
 
     private boolean checkSunk()

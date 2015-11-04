@@ -8,6 +8,15 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
+import com.aespurge.sundevilbattleship.Game.Facing;
+import com.aespurge.sundevilbattleship.Game.Vector2d;
+import com.aespurge.sundevilbattleship.Game.ships.AircraftCarrier;
+import com.aespurge.sundevilbattleship.Game.ships.Battleship;
+import com.aespurge.sundevilbattleship.Game.ships.Cruiser;
+import com.aespurge.sundevilbattleship.Game.ships.Destroyer;
+import com.aespurge.sundevilbattleship.Game.ships.Submarine;
+import com.aespurge.sundevilbattleship.Game.ships.Warship;
+
 public class GameplayActivity extends AppCompatActivity {
 
     // GridLayout for the playing board
@@ -18,6 +27,7 @@ public class GameplayActivity extends AppCompatActivity {
     ImageView selectedTile;
     int selectedX = 0, selectedY = 0;
     Button fireButton;
+    Warship[] shipList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +35,46 @@ public class GameplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gameplay);
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
         fireButton = (Button)findViewById(R.id.fireButton);
+        shipList = new Warship[5];
         imageList = new ImageView[10][10];
+        populateShipList();
         //Populate the grid with basic bordered sea tiles
         populateImageGrid();
         //Have to initialize the selectedTile.
         selectedTile = imageList[0][0];
+        drawShips();
 
+    }
 
+    private void drawShips() {
+        for (int y=0; y<10; y++) {
+            for (int x = 0; x < 10; x++) {
+                for (Warship ship : shipList) {
+                    if (x == ship.getLocation().getX()){
+                        if (y == ship.getLocation().getY()) {
+                            for (int i = 0; i < ship.getLength(); i++) {
+                                if (ship.getFacing() == Facing.North) {
+                                    imageList[x][y + i].setImageResource(R.drawable.ship);
+                                    imageList[x][y + i].setTag("ship");
+                                }else{
+                                    imageList[x + i][y].setImageResource(R.drawable.ship);
+                                    imageList[x + i][y].setTag("ship");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void populateShipList() {
+        shipList[0] = new Battleship(new Vector2d(0,0), Facing.North);
+        shipList[1] = new AircraftCarrier(new Vector2d(2,0), Facing.North);
+        shipList[2] = new Cruiser(new Vector2d(4,0), Facing.North);
+        shipList[3] = new Submarine(new Vector2d(6,0), Facing.North);
+        shipList[4] = new Destroyer(new Vector2d(8,0), Facing.North);
     }
 
 
@@ -42,6 +85,7 @@ public class GameplayActivity extends AppCompatActivity {
                 imageList[x][y] = new ImageView(this);
                 imageList[x][y].setImageResource(R.drawable.sea);
                 imageList[x][y].setTag("sea");
+
                 gridLayout.addView(imageList[x][y]);
                 imageList[x][y].setClickable(true);
                 imageList[x][y].setLongClickable(true);
@@ -78,6 +122,14 @@ public class GameplayActivity extends AppCompatActivity {
             selectedTile.setImageResource(R.drawable.sea_explosion);
             selectedTile.setTag("sea_explosion");
         }
+        if(selectedTile.getTag() == "ship_selected") {
+            selectedTile.setImageResource(R.drawable.ship);
+            selectedTile.setTag("ship");
+        }
+        if(selectedTile.getTag() == "ship_explosion_selected") {
+            selectedTile.setImageResource(R.drawable.ship_explosion);
+            selectedTile.setTag("ship_explosion");
+        }
         selectedTile = (ImageView) v;
         selectedX = v.getId() / 10;
         selectedY = v.getId() % 10;
@@ -88,6 +140,14 @@ public class GameplayActivity extends AppCompatActivity {
         if (v.getTag()=="sea_explosion") {
             imageList[selectedX][selectedY].setImageResource(R.drawable.sea_explosion_selected);
             v.setTag("sea_explosion_selected");
+        }
+        if (v.getTag()=="ship") {
+            imageList[selectedX][selectedY].setImageResource(R.drawable.ship_selected);
+            v.setTag("ship_selected");
+        }
+        if (v.getTag()=="ship_explosion") {
+            imageList[selectedX][selectedY].setImageResource(R.drawable.ship_explosion_selected);
+            v.setTag("ship_explosion_selected");
         }
 
     }

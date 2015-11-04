@@ -10,8 +10,8 @@ import com.aespurge.sundevilbattleship.Game.WarshipType;
 
 public class Submarine implements Warship
 {
-    private final int shipLength = 2;
-    private final int firepower = 2;
+    private final int shipLength = 3;
+    private final int firepower = 3;
     private final WarshipType type = WarshipType.Submarine;
     private final Facing facing;
     private final Vector2d location;
@@ -77,6 +77,11 @@ public class Submarine implements Warship
             return true;
         else
             return false;
+    }
+
+    @Override
+    public boolean damage(Vector2d location) {
+        return false;
     }
 
     private boolean checkSunk()
