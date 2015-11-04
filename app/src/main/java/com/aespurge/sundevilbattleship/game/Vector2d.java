@@ -1,4 +1,4 @@
-package edu.asu.cst215.sun_devil_battleship.game;
+package com.aespurge.sundevilbattleship.game;
 
 /**
  * Created by Alexander on 10/29/2015.
