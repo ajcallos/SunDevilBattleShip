@@ -2,11 +2,11 @@
  * Created by Alexander on 10/29/2015.
  */
 
-package edu.asu.cst215.sun_devil_battleship.game.ships;
+package com.aespurge.sundevilbattleship.Game.ships;
 
-import edu.asu.cst215.sun_devil_battleship.game.Facing;
-import edu.asu.cst215.sun_devil_battleship.game.Vector2d;
-import edu.asu.cst215.sun_devil_battleship.game.WarshipType;
+import com.aespurge.sundevilbattleship.Game.Facing;
+import com.aespurge.sundevilbattleship.Game.Vector2d;
+import com.aespurge.sundevilbattleship.Game.WarshipType;
 
 public class Cruiser implements Warship
 {

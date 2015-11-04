@@ -2,24 +2,24 @@
  * Created by Alexander on 10/29/2015.
  */
 
-package edu.asu.cst215.sun_devil_battleship.game.ships;
+package com.aespurge.sundevilbattleship.Game.ships;
 
-import edu.asu.cst215.sun_devil_battleship.game.Facing;
-import edu.asu.cst215.sun_devil_battleship.game.Vector2d;
-import edu.asu.cst215.sun_devil_battleship.game.WarshipType;
+import com.aespurge.sundevilbattleship.Game.Facing;
+import com.aespurge.sundevilbattleship.Game.Vector2d;
+import com.aespurge.sundevilbattleship.Game.WarshipType;
 
-public class Submarine implements Warship
+public class AircraftCarrier implements Warship
 {
-    private final int shipLength = 2;
-    private final int firepower = 2;
-    private final WarshipType type = WarshipType.Submarine;
+    private final int shipLength = 4;
+    private final int firepower = 4;
+    private final WarshipType type = WarshipType.AircraftCarrier;
     private final Facing facing;
     private final Vector2d location;
 
     private boolean sunk = false;
     private int[] damage = new int[shipLength];
 
-    public Submarine(Vector2d location, Facing facing)
+    public AircraftCarrier(Vector2d location, Facing facing)
     {
         this.location = location;
         this.facing = facing;
@@ -49,7 +49,7 @@ public class Submarine implements Warship
     }
 
     @Override
-    public Vector2d getLocation()
+    public Vector2d[] getLocation()
     {
         return location;
     }
