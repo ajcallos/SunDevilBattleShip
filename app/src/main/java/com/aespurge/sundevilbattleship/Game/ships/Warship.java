@@ -18,6 +18,8 @@ public interface Warship
 
     Vector2d getLocation();
 
+    void setLocation(int x, int y);
+
     Facing getFacing();
 
     boolean isSunk();

@@ -13,8 +13,8 @@ public class Cruiser implements Warship
     private final int shipLength = 3;
     private final int firepower = 3;
     private final WarshipType type = WarshipType.Cruiser;
-    private final Facing facing;
-    private final Vector2d location;
+    private Facing facing;
+    private Vector2d location;
 
     private boolean sunk = false;
     private int[] damage = new int[shipLength];
@@ -53,6 +53,12 @@ public class Cruiser implements Warship
     {
         return location;
     }
+
+    @Override
+    public void setLocation(int x, int y) {
+        this.location = new Vector2d(x, y);
+    }
+
     @Override
     public Facing getFacing()
     {
