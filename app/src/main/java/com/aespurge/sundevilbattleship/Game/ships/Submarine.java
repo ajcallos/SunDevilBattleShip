@@ -66,6 +66,14 @@ public class Submarine implements Warship
     }
 
     @Override
+    public void switchFacing() {
+        if(this.facing == Facing.North)
+            this.facing = Facing.West;
+        else
+            this.facing = Facing.North;
+    }
+
+    @Override
     public boolean isSunk()
     {
         return sunk;

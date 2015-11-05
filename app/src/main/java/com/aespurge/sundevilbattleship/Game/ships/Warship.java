@@ -22,6 +22,8 @@ public interface Warship
 
     Facing getFacing();
 
+    void switchFacing();
+
     boolean isSunk();
 
     boolean damage(int location);

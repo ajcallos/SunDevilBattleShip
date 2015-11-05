@@ -20,33 +20,29 @@ import com.aespurge.sundevilbattleship.Game.ships.Warship;
 
 public class GameplayActivity extends AppCompatActivity {
 
-    // GridLayout for the playing board
-    GridLayout gridLayout;
-    //2d array for holding all the image tiles
-    Tile[][] tiles;
-    //Points to the currently selected tile
-    Tile selectedTile;
-    Button fireButton;
-    Warship[] shipList;
-    Warship grabbedShip;
+    GridLayout gridLayout; //GridLayout for the playing board
+    Tile[][] tiles; //2d array for holding all the image tiles
+    Tile selectedTile; //Points to the currently selected tile
+    Button button; //Button at the bottom of the screen, for advancing the game.
+    Warship[] shipList; //Array to hold all the ships.
+    Warship grabbedShip; //This helps with drag'n'drop.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gameplay);
         gridLayout = (GridLayout) findViewById(R.id.gridLayout);
-        fireButton = (Button)findViewById(R.id.fireButton);
-        shipList = new Warship[5];
+        button = (Button)findViewById(R.id.button);
         tiles = new Tile[10][10];
-        populateShipList();
-        //Populate the grid with basic bordered sea tiles
         populateImageGrid();
-        //Have to initialize the selectedTile.
-        selectedTile = tiles[0][0];
+        selectedTile = tiles[0][0];//Have to initialize the selectedTile.
+        shipList = new Warship[5];
+        populateShipList();
         populateShips();
 
     }
 
+    //Draws the ships. Changes all the necessary tile properties and the image to a ship.
     public void drawShip(Warship ship) {
         int x = ship.getLocation().getX();
         int y = ship.getLocation().getY();
@@ -54,32 +50,37 @@ public class GameplayActivity extends AppCompatActivity {
             if (ship.getFacing() == Facing.North) {
                 tiles[x][y + i].setImageResource(R.drawable.ship);
                 tiles[x][y + i].setOnTouchListener(new MyTouchListener());
+                tiles[x][y + i].setOnClickListener(new shipClickListener());
                 tiles[x][y + i].setIsSea(false);
                 tiles[x][y + i].setIsShip(true);
                 tiles[x][y + i].setShip(ship);
             } else {
-                tiles[x][y + i].setImageResource(R.drawable.ship);
-                tiles[x][y + i].setOnTouchListener(new MyTouchListener());
-                tiles[x][y + i].setIsSea(false);
-                tiles[x][y + i].setIsShip(true);
-                tiles[x][y + i].setShip(ship);
+                tiles[x + i][y].setImageResource(R.drawable.ship);
+                tiles[x + i][y].setOnTouchListener(new MyTouchListener());
+                tiles[x + i][y].setOnClickListener(new shipClickListener());
+                tiles[x + i][y].setIsSea(false);
+                tiles[x + i][y].setIsShip(true);
+                tiles[x + i][y].setShip(ship);
             }
         }
     }
 
+    //Undraws the ship. So, sets it back to a plain ol' sea tile.
     private void undrawShip(Warship ship) {
         int x = ship.getLocation().getX();
         int y = ship.getLocation().getY();
         for(int i = 0; i < ship.getLength(); i++){
-            if (ship.getFacing() == Facing.North){
+            if (ship.getFacing() == Facing.North) {
                 tiles[x][y + i].setImageResource(R.drawable.sea);
                 tiles[x][y + i].setOnTouchListener(null);
+                tiles[x][y + i].setOnClickListener(null);
                 tiles[x][y + i].setIsSea(true);
                 tiles[x][y + i].setIsShip(false);
                 tiles[x][y + i].setShip(null);
             }else{
                 tiles[x + i][y].setImageResource(R.drawable.sea);
                 tiles[x + i][y].setOnTouchListener(null);
+                tiles[x + i][y].setOnClickListener(null);
                 tiles[x + i][y].setIsSea(true);
                 tiles[x + i][y].setIsShip(false);
                 tiles[x + i][y].setShip(null);
@@ -87,33 +88,35 @@ public class GameplayActivity extends AppCompatActivity {
         }
     }
 
+    //First checks to make sure the ship won't be out of bounds of the grid. Then it checks to make sure it won't
+    //overlap anything.
     private boolean checkViableShipLocation(Warship ship) {
+        Facing facing = ship.getFacing();
         int length = ship.getLength();
         int x = ship.getLocation().getX();
         int y = ship.getLocation().getY();
-        if(ship.getFacing() == Facing.North){
+        if(facing == Facing.North){
             if(y+length > 10)
                 return false;
         }else{
             if(x+length > 10)
                 return false;
         }
-        for(int i = 0; i < ship.getLength(); i++) {
+        for(int i = 0; i < length; i++) {
             if (ship.getFacing() == Facing.North) {
                 if (tiles[x][y + i].isShip()) {
                     return false;
                 }
             } else {
-                if (ship.getFacing() == Facing.North) {
-                    if (tiles[x + i][y].isShip()) {
-                        return false;
-                    }
+                if (tiles[x + i][y].isShip()) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
+    //Just draws all the ships.
     private void populateShips() {
         for (Warship ship : shipList)
         {
@@ -121,6 +124,7 @@ public class GameplayActivity extends AppCompatActivity {
         }
     }
 
+    //Fills the shipList array with ships. Starting positions are always the same.
     private void populateShipList() {
         shipList[0] = new Battleship(new Vector2d(0,0), Facing.North);
         shipList[1] = new AircraftCarrier(new Vector2d(2,0), Facing.North);
@@ -136,12 +140,11 @@ public class GameplayActivity extends AppCompatActivity {
             for (int x = 0; x < 10; x++) {
                 tiles[x][y] = new Tile(this, x, y);
                 tiles[x][y].setImageResource(R.drawable.sea);
-                gridLayout.addView(tiles[x][y]);
                 tiles[x][y].setClickable(true);
-                tiles[x][y].setLongClickable(true);
+                gridLayout.addView(tiles[x][y]);
 
                 //Right now the clicks just highlight sea tiles. I'll need to make this better to account for different tiles.d
-                tiles[x][y].setOnLongClickListener(new View.OnLongClickListener() {
+                /*tiles[x][y].setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View tile) {
                         selectTile((Tile) tile);
@@ -149,11 +152,12 @@ public class GameplayActivity extends AppCompatActivity {
                     }
                 });
                 tiles[x][y].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View tile) {
-                        selectTile((Tile) tile);
-                    }
-                });
+                   @Override
+                   public void onClick(View tile) {
+                       selectTile((Tile) tile);
+                   }
+                });*/
+
                 tiles[x][y].setOnDragListener(new MyDragListener());
             }
         }
@@ -177,7 +181,7 @@ public class GameplayActivity extends AppCompatActivity {
             selectedTile.setImageResource(R.drawable.ship_explosion);
             tile.setIsSelected(true);
         }
-        selectedTile = (Tile) tile;
+        selectedTile = tile;
         if (tile.isSea()) {
             tile.setImageResource(R.drawable.sea_selected);
             tile.setIsSelected(true);
@@ -209,6 +213,19 @@ public class GameplayActivity extends AppCompatActivity {
         }
     }
 
+    //Turns the ships. Undraws it, turns it, checks to see if it's a valid position, and either draws it, or turns it back then draws it.
+    private void turnShip(Warship ship){
+        undrawShip(ship);
+        ship.switchFacing();
+        if(checkViableShipLocation(ship)){
+            drawShip(ship);
+        }else{
+            ship.switchFacing();
+            drawShip(ship);
+        }
+    }
+
+    //Starts the grab for drag'n'drop.
     private class MyTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -226,13 +243,12 @@ public class GameplayActivity extends AppCompatActivity {
         }
     }
 
+    //Drag'n'drop for ships. I left all the cases 'cuz that's how the tutorial I was watching did it and I don't wanna mess with it yet.
     public class MyDragListener implements View.OnDragListener {
         @Override
         public boolean onDrag(View v, DragEvent event) {
             Tile tile = (Tile) v;
             Vector2d previousLocation = grabbedShip.getLocation();
-
-            int action = event.getAction();
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     // do nothing
@@ -256,6 +272,14 @@ public class GameplayActivity extends AppCompatActivity {
                     break;
             }
             return true;
+        }
+    }
+
+    //Listener to turn the ships when you tap on 'em.
+    private class shipClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View tile) {
+            turnShip(((Tile) tile).getShip());
         }
     }
 }
