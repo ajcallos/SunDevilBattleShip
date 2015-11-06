@@ -3,6 +3,7 @@ package com.aespurge.sundevilbattleship;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.ships.Warship;
 
 /**
@@ -17,6 +18,18 @@ public class Tile extends ImageView {
     private boolean isSea;
     private boolean isShip;
     private boolean isShot;
+    private boolean isEnemy;
+
+    public Tile(Context context, int x, int y, boolean isEnemy) {
+        super(context);
+        this.x = x;
+        this.y = y;
+        this.isEnemy = isEnemy;
+        this.isSelected = false;
+        this.isSea = true;
+        this.isShip = false;
+        this.isShot = false;
+    }
 
     public boolean isShot() {
         return isShot;
@@ -65,19 +78,5 @@ public class Tile extends ImageView {
 
     public int getYCoordinate() {
         return y;
-    }
-
-    public Tile(Context context) {
-        super(context);
-    }
-
-    public Tile(Context context, int x, int y) {
-        super(context);
-        this.x = x;
-        this.y = y;
-        this.isSelected = false;
-        this.isSea = true;
-        this.isShip = false;
-        this.isShot = false;
     }
 }

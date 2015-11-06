@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">SunDevilBattleShip</string>
     <string name="new_game_button_text">New Game</string>
-    <string name="button">Fire!</string>
+    <string name="button">Begin!</string>
 </resources>
