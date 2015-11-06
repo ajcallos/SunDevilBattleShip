@@ -7,12 +7,14 @@ package com.aespurge.sundevilbattleship.Game.ships;
 import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.Vector2d;
 import com.aespurge.sundevilbattleship.Game.WarshipType;
+import com.aespurge.sundevilbattleship.R;
 
 public class Battleship implements Warship
 {
-    private final int shipLength = 5;
-    private final int firepower = 5;
+    private final int shipLength = 4;
+    private final int firepower = 4;
     private final WarshipType type = WarshipType.Battleship;
+    private final int[] drawables;
     private Facing facing;
     private Vector2d location;
 
@@ -23,6 +25,12 @@ public class Battleship implements Warship
     {
         this.location = location;
         this.facing = facing;
+
+        drawables = new int[shipLength];
+        drawables[0] = R.drawable.b1;
+        drawables[1] = R.drawable.b2;
+        drawables[2] = R.drawable.b3;
+        drawables[3] = R.drawable.b4;
 
         for (int i = 0; i < shipLength; i++)
         {
@@ -80,6 +88,11 @@ public class Battleship implements Warship
     }
 
     @Override
+    public void sink() {
+        this.sunk = true;
+    }
+
+    @Override
     public boolean damage(int location)
     {
         if (damage[location] == 1)
@@ -96,6 +109,11 @@ public class Battleship implements Warship
     @Override
     public boolean damage(Vector2d location) {
         return false;
+    }
+
+    @Override
+    public int[] getDrawables() {
+        return drawables;
     }
 
     private boolean checkSunk()

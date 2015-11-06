@@ -7,12 +7,14 @@ package com.aespurge.sundevilbattleship.Game.ships;
 import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.Vector2d;
 import com.aespurge.sundevilbattleship.Game.WarshipType;
+import com.aespurge.sundevilbattleship.R;
 
 public class Destroyer implements Warship
 {
     private final int shipLength = 2;
     private final int firepower = 2;
     private final WarshipType type = WarshipType.Destroyer;
+    private final int[] drawables;
     private Facing facing;
     private Vector2d location;
 
@@ -23,6 +25,10 @@ public class Destroyer implements Warship
     {
         this.location = location;
         this.facing = facing;
+
+        drawables = new int[shipLength];
+        drawables[0] = R.drawable.d1;
+        drawables[1] = R.drawable.d2;
 
         for (int i = 0; i < shipLength; i++)
         {
@@ -80,6 +86,11 @@ public class Destroyer implements Warship
     }
 
     @Override
+    public void sink() {
+        this.sunk = true;
+    }
+
+    @Override
     public boolean damage(int location)
     {
         if (damage[location] == 1)
@@ -107,5 +118,10 @@ public class Destroyer implements Warship
         }
 
         return true;
+    }
+
+    @Override
+    public int[] getDrawables() {
+        return drawables;
     }
 }

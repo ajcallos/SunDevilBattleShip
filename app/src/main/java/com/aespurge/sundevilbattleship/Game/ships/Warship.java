@@ -4,6 +4,8 @@
 
 package com.aespurge.sundevilbattleship.Game.ships;
 
+import android.graphics.drawable.Drawable;
+
 import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.Vector2d;
 import com.aespurge.sundevilbattleship.Game.WarshipType;
@@ -26,7 +28,11 @@ public interface Warship
 
     boolean isSunk();
 
+    void sink();
+
     boolean damage(int location);
 
     boolean damage(Vector2d location);
+
+    int[] getDrawables();
 }
