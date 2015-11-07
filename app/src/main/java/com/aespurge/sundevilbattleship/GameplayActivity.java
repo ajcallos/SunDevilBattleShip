@@ -2,6 +2,7 @@ package com.aespurge.sundevilbattleship;
 
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.DragEvent;
@@ -267,15 +268,24 @@ public class GameplayActivity extends AppCompatActivity {
                 if(selectedTile == null) {
                     break;
                 }
-                fire();
                 button.setText("Ready?");
                 gamePhase = 2;
+                fire();
                 break;
             case 2:
                 switchBoards();
-                enemyFire();
                 button.setText("Next Turn");
                 gamePhase = 0;
+                enemyFire();
+                break;
+            case 3:
+                button.setText("You win/Lose!");
+                gamePhase = 4;
+                break;
+            case 4:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                button.setText("New Game");
                 break;
             default:
                 gamePhase = 0;
@@ -328,6 +338,8 @@ public class GameplayActivity extends AppCompatActivity {
             if(!ship.isSunk())
                 win = false;
         }
+        if (win)
+            gamePhase = 3;
     }
 
     //Turns the ships. Undraws it, turns it, checks to see if it's a valid position, and either draws it, or turns it back then draws it.
