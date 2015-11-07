@@ -17,26 +17,37 @@ public class AircraftCarrier implements Warship
     private final WarshipType type = WarshipType.AircraftCarrier;
     private Facing facing;
     private Vector2d location;
-    private final int[] drawables;
-    private boolean sunk = false;
+    private int[] drawables;
+    private boolean sunk;
+    private final boolean isEnemy;
+    private boolean[] damage = new boolean[shipLength];
 
-    private int[] damage = new int[shipLength];
-
-    public AircraftCarrier(Vector2d location, Facing facing)
+    public AircraftCarrier(Vector2d location, Facing facing, boolean isEnemy)
     {
         this.location = location;
         this.facing = facing;
+        this.isEnemy = isEnemy;
 
         drawables = new int[shipLength];
-        drawables[0] = R.drawable.a1;
-        drawables[1] = R.drawable.a2;
-        drawables[2] = R.drawable.a3;
-        drawables[3] = R.drawable.a4;
-        drawables[4] = R.drawable.a5;
+        if(isEnemy){
+            drawables[0] = R.drawable.sea;
+            drawables[1] = R.drawable.sea;
+            drawables[2] = R.drawable.sea;
+            drawables[3] = R.drawable.sea;
+            drawables[4] = R.drawable.sea;
+        }else{
+            drawables[0] = R.drawable.a1;
+            drawables[1] = R.drawable.a2;
+            drawables[2] = R.drawable.a3;
+            drawables[3] = R.drawable.a4;
+            drawables[4] = R.drawable.a5;
+        }
+
+
 
         for (int i = 0; i < shipLength; i++)
         {
-            damage[i] = 0;
+            damage[i] = false;
         }
     }
 
@@ -95,17 +106,11 @@ public class AircraftCarrier implements Warship
     }
 
     @Override
-    public boolean damage(int location)
-    {
-        if (damage[location] == 1)
-            return false;
-        else
-            damage[location] = 1;
-
+    public void damage(int location){
+        damage[location] = true;
+        drawables[location] = R.drawable.ship_explosion;
         if (checkSunk())
-            return true;
-        else
-            return false;
+            sink();
     }
 
     @Override
@@ -117,16 +122,15 @@ public class AircraftCarrier implements Warship
     {
         for (int i = 0; i < shipLength; i++)
         {
-            if (damage[i] == 0)
+            if (damage[i] == false)
                 return false;
         }
-
         return true;
     }
 
     @Override
-    public int[] getDrawables() {
-        return drawables;
+    public int getDrawable(int x) {
+        return drawables[x];
     }
 
 }

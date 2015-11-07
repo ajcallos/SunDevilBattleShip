@@ -18,6 +18,9 @@ public class Tile extends ImageView {
     private boolean isSea;
     private boolean isShip;
     private boolean isShot;
+
+
+
     private boolean isEnemy;
 
     public Tile(Context context, int x, int y, boolean isEnemy) {
@@ -29,6 +32,10 @@ public class Tile extends ImageView {
         this.isSea = true;
         this.isShip = false;
         this.isShot = false;
+    }
+
+    public boolean isEnemy() {
+        return isEnemy;
     }
 
     public boolean isShot() {

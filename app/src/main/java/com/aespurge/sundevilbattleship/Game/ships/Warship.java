@@ -30,9 +30,9 @@ public interface Warship
 
     void sink();
 
-    boolean damage(int location);
+    void damage(int location);
 
     boolean damage(Vector2d location);
 
-    int[] getDrawables();
+    int getDrawable(int x);
 }

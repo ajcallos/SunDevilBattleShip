@@ -17,7 +17,6 @@ import com.aespurge.sundevilbattleship.Game.ships.Cruiser;
 import com.aespurge.sundevilbattleship.Game.ships.Destroyer;
 import com.aespurge.sundevilbattleship.Game.ships.Submarine;
 import com.aespurge.sundevilbattleship.Game.ships.Warship;
-
 import java.util.Random;
 
 public class GameplayActivity extends AppCompatActivity {
@@ -29,6 +28,7 @@ public class GameplayActivity extends AppCompatActivity {
     Warship[] myShips, enemyShips; //Array to hold all the ships.
     Warship grabbedShip; //This helps with drag'n'drop.
     Random rand = new Random();
+    int gamePhase = 0;
 
 
     @Override
@@ -45,8 +45,8 @@ public class GameplayActivity extends AppCompatActivity {
         selectedTile = null;//Have to initialize the selectedTile.
         myShips = new Warship[5];
         enemyShips = new Warship[5];
-        populateShipList(myShips);
-        populateShipList(enemyShips);
+        populateShipList(myShips, false);
+        populateShipList(enemyShips, true);
         populateShips(myShips, myTiles);
         populateShips(enemyShips, enemyTiles);
         addBoard();
@@ -91,15 +91,19 @@ public class GameplayActivity extends AppCompatActivity {
         int y = ship.getLocation().getY();
         for(int i = 0; i < ship.getLength(); i++) {
             if (ship.getFacing() == Facing.North) {
-                tiles[x][y + i].setOnTouchListener(new MyTouchListener());
-                tiles[x][y + i].setOnClickListener(new shipClickListener());
+                if(!tiles[x][y + i].isEnemy()){
+                    tiles[x][y + i].setOnTouchListener(new MyTouchListener());
+                    tiles[x][y + i].setOnClickListener(new shipClickListener());
+                }
                 tiles[x][y + i].setIsSea(false);
                 tiles[x][y + i].setIsShip(true);
                 tiles[x][y + i].setShip(ship);
                 drawMap(tiles);
             } else {
-                tiles[x + i][y].setOnTouchListener(new MyTouchListener());
-                tiles[x + i][y].setOnClickListener(new shipClickListener());
+                if(!tiles[x + i][y].isEnemy()) {
+                    tiles[x + i][y].setOnTouchListener(new MyTouchListener());
+                    tiles[x + i][y].setOnClickListener(new shipClickListener());
+                }
                 tiles[x + i][y].setIsSea(false);
                 tiles[x + i][y].setIsShip(true);
                 tiles[x + i][y].setShip(ship);
@@ -174,37 +178,33 @@ public class GameplayActivity extends AppCompatActivity {
     }
 
     //Fills the myShips array with ships. Starting positions are always the same.
-    private void populateShipList(Warship[] ships) {
-        ships[0] = new AircraftCarrier(new Vector2d(0,0), Facing.North);
-        ships[1] = new Battleship(new Vector2d(2,0), Facing.North);
-        ships[2] = new Cruiser(new Vector2d(4,0), Facing.North);
-        ships[3] = new Submarine(new Vector2d(6,0), Facing.North);
-        ships[4] = new Destroyer(new Vector2d(8,0), Facing.North);
+    private void populateShipList(Warship[] ships, boolean isEnemy) {
+        ships[0] = new AircraftCarrier(new Vector2d(0,0), Facing.North, isEnemy);
+        ships[1] = new Battleship(new Vector2d(2,0), Facing.North, isEnemy);
+        ships[2] = new Cruiser(new Vector2d(4,0), Facing.North, isEnemy);
+        ships[3] = new Submarine(new Vector2d(6,0), Facing.North, isEnemy);
+        ships[4] = new Destroyer(new Vector2d(8,0), Facing.North, isEnemy);
     }
 
 
     private void drawMap(Tile[][] tiles) {
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                int drawable;
-                if (tiles[x][y].isShip()) {
-                    if (tiles[x][y].getShip().getFacing() == Facing.North) {
-                        drawable = y - tiles[x][y].getShip().getLocation().getY();
-                        tiles[x][y].setImageResource(tiles[x][y].getShip().getDrawables()[drawable]);
-                    } else {
-                        drawable = x - tiles[x][y].getShip().getLocation().getX();
-                        tiles[x][y].setImageResource(tiles[x][y].getShip().getDrawables()[drawable]);
+        int drawableID;
+        for(Tile[] x : tiles){
+            for(Tile tile : x){
+                if(tile.isSelected()){
+                    tile.setImageResource(R.drawable.sea_selected);
+                }else if(tile.isShip()){
+                    if(tile.getShip().getFacing() == Facing.North){
+                        drawableID = tile.getYCoordinate()-tile.getShip().getLocation().getY();
+                        tile.setImageResource(tile.getShip().getDrawable(drawableID));
+                    }else{
+                        drawableID = tile.getXCoordinate()-tile.getShip().getLocation().getX();
+                        tile.setImageResource(tile.getShip().getDrawable(drawableID));
                     }
-                } else {
-                    if (tiles[x][y].isShot()) {
-                        tiles[x][y].setImageResource(R.drawable.sea_explosion);
-                    } else {
-                        if (tiles[x][y].isSelected()) {
-                            tiles[x][y].setImageResource(R.drawable.sea_selected);
-                        } else {
-                            tiles[x][y].setImageResource(R.drawable.sea);
-                        }
-                    }
+                }else if(tile.isShot()){
+                    tile.setImageResource(R.drawable.sea_explosion);
+                }else {
+                    tile.setImageResource(R.drawable.sea);
                 }
             }
         }
@@ -227,9 +227,9 @@ public class GameplayActivity extends AppCompatActivity {
                         }
                     });
                     tiles[x][y].setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View tile) {
-                           selectTile((Tile) tile);
+                        @Override
+                        public void onClick(View tile) {
+                            selectTile((Tile) tile);
                        }
                     });
                 }else{
@@ -242,62 +242,91 @@ public class GameplayActivity extends AppCompatActivity {
 
     //Sets selected tile to "selected" and changes image to highlighted version.
     void selectTile(Tile tile){
-        if(selectedTile.isSea()) {
-            selectedTile.setImageResource(R.drawable.sea);
-            tile.setIsSelected(false);
+        if(selectedTile != null){
+            selectedTile.setIsSelected(false);
+            selectedTile = null;
         }
-        if(selectedTile.isSea() && selectedTile.isShot()) {
-            selectedTile.setImageResource(R.drawable.sea_explosion);
+        if (!tile.isShot()) {
+            selectedTile = tile;
             tile.setIsSelected(true);
         }
-        if(selectedTile.isShip()) {
-            selectedTile.setImageResource(R.drawable.ship);
-            tile.setIsSelected(true);
-        }
-        if(selectedTile.isShip() && selectedTile.isShot()) {
-            selectedTile.setImageResource(R.drawable.ship_explosion);
-            tile.setIsSelected(true);
-        }
-        selectedTile = tile;
-        if (tile.isSea()) {
-            tile.setImageResource(R.drawable.sea_selected);
-            tile.setIsSelected(true);
-        }
-        if (tile.isSea() && tile.isShot()) {
-            tile.setImageResource(R.drawable.sea_explosion_selected);
-            tile.setIsSelected(true);
-        }
-        if (tile.isShip()) {
-            tile.setImageResource(R.drawable.ship_selected);
-            tile.setIsSelected(true);
-        }
-        if (tile.isShip() && tile.isShot()) {
-            tile.setImageResource(R.drawable.ship_explosion_selected);
-            tile.setIsSelected(true);
-        }
-
+        drawMap(enemyTiles);
     }
 
     //Checks selected tile, then changes the image to the appropriate explosion type.
-    public void onFire(View v){
+    public void onButtonClick(View v){
+
+
+        switch(gamePhase) {
+            case 0:
+                switchBoards();
+                button.setText("Fire!");
+                gamePhase = 1;
+                break;
+            case 1:
+                if(selectedTile == null) {
+                    break;
+                }
+                fire();
+                button.setText("Ready?");
+                gamePhase = 2;
+                break;
+            case 2:
+                switchBoards();
+                enemyFire();
+                button.setText("Next Turn");
+                gamePhase = 0;
+                break;
+            default:
+                gamePhase = 0;
+        }
+
+        }
+
+    private void enemyFire() {
         int shotLocation;
-        switchBoards();
-        if(selectedTile != null) {
-            if (selectedTile.isSea()) {
-                selectedTile.setImageResource(R.drawable.sea_explosion);
-                selectedTile.setIsShot(true);
+        do {
+            selectedTile = myTiles[rand.nextInt(9)][rand.nextInt(9)];
+        }while(selectedTile.isShot());
+        if (selectedTile.isShip()) {
+            if (selectedTile.getShip().getFacing() == Facing.North) {
+                shotLocation = selectedTile.getYCoordinate() - selectedTile.getShip().getLocation().getY();
+            } else {
+                shotLocation = selectedTile.getXCoordinate() - selectedTile.getShip().getLocation().getX();
             }
+            selectedTile.getShip().damage(shotLocation);
+        }
+        selectedTile.setIsShot(true);
+        selectedTile.setIsSelected(false);
+        selectedTile = null;
+        drawMap(myTiles);
+        checkWin(myShips);
+    }
+
+    private void fire(){
+        int shotLocation;
+        if(selectedTile != null) {
             if (selectedTile.isShip()) {
                 if (selectedTile.getShip().getFacing() == Facing.North) {
-                    shotLocation = selectedTile.getShip().getLocation().getY() - selectedTile.getYCoordinate();
+                    shotLocation = selectedTile.getYCoordinate() - selectedTile.getShip().getLocation().getY();
                 } else {
-                    shotLocation = selectedTile.getShip().getLocation().getX() - selectedTile.getXCoordinate();
+                    shotLocation = selectedTile.getXCoordinate() - selectedTile.getShip().getLocation().getX();
                 }
-                selectedTile.setImageResource(R.drawable.ship_explosion);
-                selectedTile.setIsShot(true);
-                if (selectedTile.getShip().damage(shotLocation))
-                    selectedTile.getShip().sink();
+                selectedTile.getShip().damage(shotLocation);
             }
+            selectedTile.setIsShot(true);
+            selectedTile.setIsSelected(false);
+            selectedTile = null;
+            drawMap(enemyTiles);
+            checkWin(enemyShips);
+        }
+    }
+
+    private void checkWin(Warship[] ships) {
+        boolean win = true;
+        for(Warship ship : ships){
+            if(!ship.isSunk())
+                win = false;
         }
     }
 
