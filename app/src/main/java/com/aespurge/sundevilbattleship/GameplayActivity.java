@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.TextView;
+
 import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.Vector2d;
 import com.aespurge.sundevilbattleship.Game.ships.AircraftCarrier;
@@ -23,12 +25,16 @@ import java.util.Random;
 public class GameplayActivity extends AppCompatActivity {
 
     GridLayout gridLayout; //GridLayout for the playing board
-    Tile[][] myTiles, enemyTiles, board; //2d array for holding all the image tiles
+    static Tile[][] myTiles;
+    Tile[][] enemyTiles;
+    Tile[][] board; //2d array for holding all the image tiles
     Tile selectedTile; //Points to the currently selected tile
     Button button; //Button at the bottom of the screen, for advancing the game.
     Warship[] myShips, enemyShips; //Array to hold all the ships.
     Warship grabbedShip; //This helps with drag'n'drop.
     Random rand = new Random();
+    AI enemyAI;
+    Feedback feedback;
     int gamePhase = 0;
 
 
@@ -50,6 +56,8 @@ public class GameplayActivity extends AppCompatActivity {
         populateShipList(enemyShips, true);
         populateShips(myShips, myTiles);
         populateShips(enemyShips, enemyTiles);
+        enemyAI = new AI(myShips);
+        feedback = new Feedback((TextView)findViewById(R.id.feedbackText));
         addBoard();
     }
 
@@ -171,7 +179,7 @@ public class GameplayActivity extends AppCompatActivity {
             do{
                 if(rand.nextBoolean())
                     ship.switchFacing();
-                ship.setLocation(rand.nextInt(9), rand.nextInt(9));
+                ship.setLocation(rand.nextInt(10), rand.nextInt(10));
             }while(!checkViableShipLocation(ship, tiles));
 
             drawShip(ship, tiles);
@@ -220,13 +228,6 @@ public class GameplayActivity extends AppCompatActivity {
 
                 //Right now the clicks just highlight sea tiles. I'll need to make this better to account for different tiles.
                 if(isEnemy){
-                    tiles[x][y].setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View tile) {
-                            selectTile((Tile) tile);
-                            return true;
-                        }
-                    });
                     tiles[x][y].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View tile) {
@@ -239,6 +240,13 @@ public class GameplayActivity extends AppCompatActivity {
             }
         }
         drawMap(tiles);
+    }
+
+    private void setTilesClickable(Tile[][] tiles, boolean bool)
+    {
+        for(Tile[] x : tiles)
+            for(Tile y : x)
+                y.setClickable(bool);
     }
 
     //Sets selected tile to "selected" and changes image to highlighted version.
@@ -263,6 +271,9 @@ public class GameplayActivity extends AppCompatActivity {
                 switchBoards();
                 button.setText("Fire!");
                 gamePhase = 1;
+                setTilesClickable(myTiles, false);
+                setTilesClickable(enemyTiles, true);
+                feedback.myTurn();
                 break;
             case 1:
                 if(selectedTile == null) {
@@ -271,6 +282,7 @@ public class GameplayActivity extends AppCompatActivity {
                 button.setText("Ready?");
                 gamePhase = 2;
                 fire();
+                setTilesClickable(enemyTiles, false);
                 break;
             case 2:
                 switchBoards();
@@ -279,13 +291,17 @@ public class GameplayActivity extends AppCompatActivity {
                 enemyFire();
                 break;
             case 3:
-                button.setText("You win/Lose!");
+                button.setText("You win!");
                 gamePhase = 4;
                 break;
             case 4:
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 button.setText("New Game");
+                break;
+            case 5:
+                button.setText("You lose!");
+                gamePhase = 4;
                 break;
             default:
                 gamePhase = 0;
@@ -295,9 +311,12 @@ public class GameplayActivity extends AppCompatActivity {
 
     private void enemyFire() {
         int shotLocation;
+        /*
         do {
-            selectedTile = myTiles[rand.nextInt(9)][rand.nextInt(9)];
+            selectedTile = myTiles[rand.nextInt(10)][rand.nextInt(10)];
         }while(selectedTile.isShot());
+        */
+        selectedTile = enemyAI.getShot();
         if (selectedTile.isShip()) {
             if (selectedTile.getShip().getFacing() == Facing.North) {
                 shotLocation = selectedTile.getYCoordinate() - selectedTile.getShip().getLocation().getY();
@@ -305,6 +324,13 @@ public class GameplayActivity extends AppCompatActivity {
                 shotLocation = selectedTile.getXCoordinate() - selectedTile.getShip().getLocation().getX();
             }
             selectedTile.getShip().damage(shotLocation);
+
+            if(selectedTile.getShip().isSunk())
+                feedback.sankShip(selectedTile.getShip(), false);
+            else
+                feedback.hitShip(selectedTile.getShip(), false);
+        }else{
+            feedback.hitWater(false);
         }
         selectedTile.setIsShot(true);
         selectedTile.setIsSelected(false);
@@ -323,6 +349,13 @@ public class GameplayActivity extends AppCompatActivity {
                     shotLocation = selectedTile.getXCoordinate() - selectedTile.getShip().getLocation().getX();
                 }
                 selectedTile.getShip().damage(shotLocation);
+
+                if(selectedTile.getShip().isSunk())
+                    feedback.sankShip(selectedTile.getShip(), true);
+                else
+                    feedback.hitShip(selectedTile.getShip(), true);
+            }else{
+                feedback.hitWater(true);
             }
             selectedTile.setIsShot(true);
             selectedTile.setIsSelected(false);
@@ -338,8 +371,12 @@ public class GameplayActivity extends AppCompatActivity {
             if(!ship.isSunk())
                 win = false;
         }
-        if (win)
-            gamePhase = 3;
+        if (win){
+            if(gamePhase == 2)
+                gamePhase = 3;
+            if(gamePhase == 0)
+                gamePhase = 5;
+        }
     }
 
     //Turns the ships. Undraws it, turns it, checks to see if it's a valid position, and either draws it, or turns it back then draws it.
@@ -410,6 +447,10 @@ public class GameplayActivity extends AppCompatActivity {
         public void onClick(View tile) {
             turnShip(((Tile) tile).getShip(), myTiles);
         }
+    }
+
+    public static Tile[][] getTiles(){
+        return myTiles;
     }
 }
 

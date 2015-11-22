@@ -32,7 +32,9 @@ public interface Warship
 
     void damage(int location);
 
-    boolean damage(Vector2d location);
+    boolean isDamaged();
 
     int getDrawable(int x);
+
+    boolean[] getDamage();
 }

@@ -19,13 +19,14 @@ public class Destroyer implements Warship
     private Vector2d location;
     private final boolean isEnemy;
     private boolean sunk = false;
-    private boolean[] damage = new boolean[shipLength];
+    private boolean[] damage;
 
     public Destroyer(Vector2d location, Facing facing, boolean isEnemy)
     {
         this.location = location;
         this.facing = facing;
         this.isEnemy = isEnemy;
+        this.damage =  new boolean[shipLength];
 
         drawables = new int[shipLength];
         if(isEnemy){
@@ -105,9 +106,13 @@ public class Destroyer implements Warship
     }
 
     @Override
-    public boolean damage(Vector2d location) {
+    public boolean isDamaged() {
+        for(boolean isDamaged : damage)
+            if(isDamaged)
+                return true;
         return false;
     }
+
 
     private boolean checkSunk()
     {
@@ -123,4 +128,7 @@ public class Destroyer implements Warship
     public int getDrawable(int x) {
         return drawables[x];
     }
+
+    @Override
+    public boolean[] getDamage(){ return damage; }
 }

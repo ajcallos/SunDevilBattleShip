@@ -30,4 +30,16 @@
         android:clickable="true"
         android:nestedScrollingEnabled="false"
         android:onClick="onButtonClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Arrange your ships!"
+        android:id="@+id/feedbackText"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:background="#ffffff" />
+
 </RelativeLayout>

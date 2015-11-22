@@ -5,6 +5,7 @@
 package com.aespurge.sundevilbattleship.Game.ships;
 
 
+import com.aespurge.sundevilbattleship.Feedback;
 import com.aespurge.sundevilbattleship.Game.Facing;
 import com.aespurge.sundevilbattleship.Game.Vector2d;
 import com.aespurge.sundevilbattleship.Game.WarshipType;
@@ -20,13 +21,14 @@ public class AircraftCarrier implements Warship
     private int[] drawables;
     private boolean sunk;
     private final boolean isEnemy;
-    private boolean[] damage = new boolean[shipLength];
+    private boolean[] damage;
 
     public AircraftCarrier(Vector2d location, Facing facing, boolean isEnemy)
     {
         this.location = location;
         this.facing = facing;
         this.isEnemy = isEnemy;
+        this.damage =  new boolean[shipLength];
 
         drawables = new int[shipLength];
         if(isEnemy){
@@ -101,9 +103,7 @@ public class AircraftCarrier implements Warship
     }
 
     @Override
-    public void sink() {
-        this.sunk = true;
-    }
+    public void sink() { this.sunk = true; }
 
     @Override
     public void damage(int location){
@@ -114,7 +114,10 @@ public class AircraftCarrier implements Warship
     }
 
     @Override
-    public boolean damage(Vector2d location) {
+    public boolean isDamaged() {
+        for(boolean isDamaged : damage)
+            if(isDamaged)
+                return true;
         return false;
     }
 
@@ -132,5 +135,8 @@ public class AircraftCarrier implements Warship
     public int getDrawable(int x) {
         return drawables[x];
     }
+
+    @Override
+    public boolean[] getDamage(){ return damage; }
 
 }
