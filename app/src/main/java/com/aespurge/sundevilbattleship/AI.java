@@ -53,11 +53,11 @@ public class AI {
                                     if (!grid[x][y - 1].isShot()) { //Check the tile above. If it's not shot yet, shoot it.
                                         return grid[x][y - 1];
                                     }
-                                    y = lastHit(ship); //Shoot the bottom tile.
-                                    if (y < 9) { //So you don't overflow the grid.
-                                       if(!grid[x][y+1].isShot()) //Check the tile below. If it's not shot yet, shoot it.
-                                           return grid[x][y + 1];
-                                    }
+                                }
+                                y = lastHit(ship); //Shoot the bottom tile.
+                                if (y < 9) { //So you don't overflow the grid.
+                                   if(!grid[x][y+1].isShot()) //Check the tile below. If it's not shot yet, shoot it.
+                                       return grid[x][y + 1];
                                 }
                             } else { //If the shots aren't all together
                                 for (int i = firstHit(ship) + 1; i < lastHit(ship); i++)
@@ -70,14 +70,12 @@ public class AI {
                             x = firstHit(ship);
                             if (isSequential(ship.getDamage())) { //As long as all the hits are together,
                                 if (x > 0) //So you don't overflow the grid.
-                                    if (!grid[x - 1][y].isShot()) {
+                                    if (!grid[x - 1][y].isShot())
                                         return grid[x - 1][y];
-                                    }
-                                    x = lastHit(ship);
-                                    if (x < 9) { //So you don't overflow the grid.
-                                        if(!grid[x+1][y].isShot()) //Check the tile below. If it's not shot yet, shoot it.
-                                            return grid[x + 1][y];
-                                    }
+                                x = lastHit(ship);
+                                if (x < 9) //So you don't overflow the grid.
+                                    if(!grid[x+1][y].isShot()) //Check the tile below. If it's not shot yet, shoot it.
+                                        return grid[x + 1][y];
                             } else {
                                 for (int i = firstHit(ship) + 1; i < lastHit(ship); i++){
                                     if (!grid[i][y].isShot()) {
@@ -107,19 +105,14 @@ public class AI {
     }
 
     private int lastHit(Warship ship) {
-        if(ship.getFacing() == Facing.North) {
-            for(int i = ship.getLength()-1; i >= 0; i--) {
-                if(ship.getDamage()[i]){
-                    return ship.getLocation().getY()+i+1;
-                }
-            }
-        }else{
-            for(int i = 0; i < ship.getLength(); i++) {
-                if(ship.getDamage()[i]){
-                    return ship.getLocation().getX()+i+1;
-                }
-            }
-        }
+        if(ship.getFacing() == Facing.North)
+            for(int i = ship.getLength()-1; i >= 0; i--)
+                if(ship.getDamage()[i])
+                    return ship.getLocation().getY()+i;
+        if(ship.getFacing() == Facing.West)
+            for(int i = ship.getLength()-1; i >= 0; i--)
+                if(ship.getDamage()[i])
+                    return ship.getLocation().getX()+i;
         return -1;
     }
 
